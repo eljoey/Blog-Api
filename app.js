@@ -3,11 +3,13 @@ require('dotenv').config
 const express = require('express')
 const session = require('express-session')
 const passport = require('passport')
+const logger = require('./utils/logger')
 
 const mongoose = require('mongoose')
 const mongoDB = process.env.MONGODB_URI
 
-console.log('Connecting to MongoDB...')
+logger.info('Connecting to MongoDB...')
+
 mongoose
   .connect(mongoDB, {
     useNewUrlParser: true,
@@ -15,8 +17,8 @@ mongoose
     useFindAndModify: false
   })
   .then(() => {
-    console.log('Connected to MongoDB')
+    logger.info('Connected to MongoDB...')
   })
   .catch(err => {
-    console.log('error connecting to MongoDB')
+    logger.error('error connecting to MongoDB')
   })
