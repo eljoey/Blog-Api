@@ -1,3 +1,20 @@
+const jwt = require('jsonwebtoken')
+
 exports.api_get = (req, res, next) => {
-  res.send('api')
+  if (!req.token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(
+    req.token,
+    process.env.SECRET,
+    (err, decoded) => {
+      if (err) return res.status(401).json({ error: 'invalid token' })
+
+      // Correct Token
+      return decoded
+    }
+  )
+
+  res.json('msg: heres the blogs')
 }

@@ -1,6 +1,8 @@
 const express = require('express')
 const config = require('./utils/config')
 const logger = require('./utils/logger')
+const middleware = require('./utils/middleware')
+
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
@@ -29,6 +31,9 @@ mongoose
 
 app.use(cors())
 app.use(bodyParser.json())
+
+app.use(middleware.requestLogger)
+app.use(middleware.getToken)
 
 app.use('/login', loginRouter)
 app.use('/api', apiRouter)
