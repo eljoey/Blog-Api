@@ -8,8 +8,7 @@ const userSchema = new Schema({
     required: true,
     minLength: 3
   },
-  passwordHash: String,
-  blogs: [{ type: Schema.Types.ObjectId, ref: 'Blog' }]
+  passwordHash: String
 })
 
 const User = mongoose.model('User', userSchema)
