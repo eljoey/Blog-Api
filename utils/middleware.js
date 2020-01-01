@@ -16,6 +16,25 @@ const getToken = (req, res, next) => {
   next()
 }
 
+const verifyToken = (req, res, next) => {
+  const decodedToken = jwt.verify(
+    req.token,
+    process.env.SECRET,
+    (err, decoded) => {
+      if (err) return res.status(401).json({ error: 'invalid token' })
+
+      // Correct Token
+      return decoded
+    }
+  )
+
+  if (!req.token || !decodedToken) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  next()
+}
+
 module.exports = {
   requestLogger,
   getToken

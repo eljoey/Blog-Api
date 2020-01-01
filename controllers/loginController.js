@@ -4,10 +4,11 @@ const User = require('../models/user')
 
 exports.login = async (req, res, next) => {
   const body = req.body
-  console.log(body)
   const user = await User.findOne({ username: body.username })
   const passCorrect =
-    user === null ? false : bcrypt.compare(body.password, user.passwordHash)
+    user === null
+      ? false
+      : await bcrypt.compare(body.password, user.passwordHash)
 
   if (!(user && passCorrect)) {
     return res.status(401).json({

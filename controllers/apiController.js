@@ -15,6 +15,6 @@ exports.api_get = (req, res, next) => {
       return decoded
     }
   )
-
+  console.log(decodedToken)
   res.json('msg: heres the blogs')
 }
