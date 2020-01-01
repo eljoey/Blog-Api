@@ -4,6 +4,6 @@ const middleware = require('../utils/middleware')
 
 const api_controller = require('../controllers/apiController')
 
-router.get('/', api_controller.api_get)
+router.get('/', middleware.verifyTokenPresent, api_controller.api_get)
 
 module.exports = router
