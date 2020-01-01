@@ -20,6 +20,9 @@ router.post(
 //   api_controller.api_blog_delete_post
 // )
 
-// router.post('/comment/create', api_controller.api_blogs_create_comment)
+router.post(
+  '/blogs/comment/create',
+  api_controller.api_blogs_create_comment_post
+)
 
 module.exports = router

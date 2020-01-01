@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 const Blog = require('../models/blog')
+const Comment = require('../models/comment')
 
 exports.api_blogs_get = async (req, res, next) => {
   const blogs = await Blog.find()
@@ -9,8 +10,7 @@ exports.api_blogs_get = async (req, res, next) => {
 
 exports.api_singleblog_get = async (req, res, next) => {
   Blog.findById(req.params.id)
-    .populate('comment')
-    .populate('user')
+    .populate('comments')
     .exec((err, blogList) => {
       if (err) {
         return res.status(400).send('Blog not found')
@@ -40,4 +40,21 @@ exports.api_blog_create_post = async (req, res, next) => {
   }
 }
 // exports.api_blog_delete_post
-// exports.api_blogs_create_comment
+exports.api_blogs_create_comment_post = async (req, res, next) => {
+  const body = req.body
+  console.log('--- Blog ID ---', body.blogId)
+
+  const blog = await Blog.findById(body.blogId)
+
+  const newComment = new Comment({
+    name: body.name,
+    text: body.text,
+    blogId: blog._id
+  })
+
+  const savedComment = await newComment.save()
+  blog.comments = blog.comments.concat(savedComment._id)
+  await blog.save()
+
+  res.json(savedComment)
+}

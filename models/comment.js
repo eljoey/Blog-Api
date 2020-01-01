@@ -6,7 +6,8 @@ const Schema = mongoose.Schema
 const commentSchema = new Schema({
   name: { type: String, required: true },
   timestamp: { type: String, required: true, default: Date.now() },
-  text: { type: String, required: true }
+  text: { type: String, required: true },
+  blogId: { type: Schema.Types.ObjectId, ref: 'Blog' }
 })
 
 // Put timestamp into easy to read format(1hr ago, 3days ago, etc.)
