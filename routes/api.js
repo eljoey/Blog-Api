@@ -17,6 +17,13 @@ router.post(
   api_controller.api_blog_create_post
 )
 
+// Update blog post after verifying JWT Token
+router.put(
+  '/blogs/:id',
+  middleware.verifyToken,
+  api_controller.api_blog_update_put
+)
+
 // Delete blog after verifying JWT Token
 router.post(
   '/blogs/delete/:id',

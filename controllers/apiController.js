@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken')
-
 const Blog = require('../models/blog')
 const Comment = require('../models/comment')
 
@@ -33,6 +31,23 @@ exports.api_blog_create_post = async (req, res, next) => {
 
   res.json(savedBlog.toJSON())
 }
+
+exports.api_blog_update_put = async (req, res, next) => {
+  const body = req.body
+  const blogId = req.params.id
+
+  const updatedBlog = {
+    title: body.title,
+    content: body.content,
+    likes: body.likes,
+    dislikes: body.dislikes,
+    comments: body.comments
+  }
+
+  await Blog.findByIdAndUpdate(blogId, updatedBlog, { new: true })
+  res.json(updatedBlog)
+}
+
 exports.api_blog_delete_post = async (req, res, next) => {
   const blogId = req.params.id
 
