@@ -17,16 +17,20 @@ const getToken = (req, res, next) => {
   next()
 }
 
-const verifyTokenPresent = (req, res, next) => {
-  if (!req.token) {
-    res.status(401).json({ error: 'token missing' })
-  } else {
-    next()
+const verifyToken = (req, res, next) => {
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+
+    req.decodedToken = decodedToken
+  } catch {
+    return res.status(401).json({ error: 'token missing or invalid' })
   }
+
+  next()
 }
 
 module.exports = {
   requestLogger,
   getToken,
-  verifyTokenPresent
+  verifyToken
 }

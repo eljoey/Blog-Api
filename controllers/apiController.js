@@ -23,28 +23,39 @@ exports.api_singleblog_get = async (req, res, next) => {
 exports.api_blog_create_post = async (req, res, next) => {
   const body = req.body
 
-  try {
-    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+  const blog = new Blog({
+    title: body.title,
+    content: body.content,
+    user: req.decodedToken.id
+  })
 
-    const blog = new Blog({
-      title: body.title,
-      content: body.content,
-      user: decodedToken.id
-    })
+  const savedBlog = await blog.save()
 
-    const savedBlog = await blog.save()
-
-    res.json(savedBlog.toJSON())
-  } catch {
-    res.status(401).json({ error: 'token invalid' })
-  }
+  res.json(savedBlog.toJSON())
 }
-// exports.api_blog_delete_post
-exports.api_blogs_create_comment_post = async (req, res, next) => {
+exports.api_blog_delete_post = async (req, res, next) => {
+  const blogId = req.params.id
+
+  // Delete comments connected to blog post
+  await Comment.deleteMany({ blogId: blogId }).exec()
+
+  await Blog.findByIdAndRemove(blogId, function deleteBlog(err) {
+    if (err) {
+      return res.json(err)
+    }
+
+    res.json({ msg: 'Blog deleted' })
+  })
+}
+
+exports.api_comment_create_post = async (req, res, next) => {
   const body = req.body
-  console.log('--- Blog ID ---', body.blogId)
 
   const blog = await Blog.findById(body.blogId)
+
+  if (!blog) {
+    return res.status(401).json({ error: 'Blog post not found' })
+  }
 
   const newComment = new Comment({
     name: body.name,
@@ -57,4 +68,32 @@ exports.api_blogs_create_comment_post = async (req, res, next) => {
   await blog.save()
 
   res.json(savedComment)
+}
+
+exports.api_comment_delete_post = async (req, res, next) => {
+  const commentId = req.params.id
+  const comment = await Comment.findById(commentId)
+  const blog = (await Blog.findById(comment.blogId)).toObject()
+
+  if (!comment || !blog) {
+    return res.status(401).json({ error: 'Comment or Blog not found' })
+  }
+
+  // Delete comment
+  await Comment.findByIdAndRemove(commentId)
+
+  // Filter out deleted comment
+  const updatedComments = blog.comments.filter(
+    comment => comment._id != commentId
+  )
+
+  // Update blogpost with deleted comment removed
+  const updatedBlog = new Blog({
+    ...blog,
+    comments: updatedComments
+  })
+
+  await Blog.findByIdAndUpdate(updatedBlog._id, updatedBlog, { new: true })
+
+  res.json({ msg: 'Comment Deleted' })
 }
