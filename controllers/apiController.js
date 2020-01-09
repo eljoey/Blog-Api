@@ -79,7 +79,7 @@ exports.api_comment_create_post = async (req, res, next) => {
   })
 
   const savedComment = await newComment.save()
-  blog.comments = blog.comments.concat(savedComment._id)
+  blog.comments = blog.comments.concat(savedComment)
   await blog.save()
 
   res.json(savedComment)
