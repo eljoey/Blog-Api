@@ -75,7 +75,8 @@ exports.api_comment_create_post = async (req, res, next) => {
   const newComment = new Comment({
     name: body.name,
     text: body.text,
-    blogId: blog._id
+    blogId: blog._id,
+    timestamp: body.timestamp
   })
 
   const savedComment = await newComment.save()
