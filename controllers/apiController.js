@@ -51,11 +51,10 @@ exports.api_blog_update_put = async (req, res, next) => {
 exports.api_reaction_update_put = async (req, res, next) => {
   const body = req.body
   const blogId = req.params.id
-
   const oldBlog = await Blog.findById(blogId)
 
   const updatedBlog = {
-    ...oldBlog,
+    ...oldBlog.toObject(),
     likes: body.likes,
     dislikes: body.dislikes
   }
