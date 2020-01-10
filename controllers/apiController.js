@@ -48,6 +48,22 @@ exports.api_blog_update_put = async (req, res, next) => {
   res.json(updatedBlog)
 }
 
+exports.api_reaction_update_put = async (req, res, next) => {
+  const body = req.body
+  const blogId = req.params.id
+
+  const oldBlog = await Blog.findById(blogId)
+
+  const updatedBlog = {
+    ...oldBlog,
+    likes: body.likes,
+    dislikes: body.dislikes
+  }
+
+  await Blog.findByIdAndUpdate(blogId, updatedBlog, { new: true })
+  res.json(updatedBlog)
+}
+
 exports.api_blog_delete_post = async (req, res, next) => {
   const blogId = req.params.id
 

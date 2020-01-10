@@ -17,12 +17,15 @@ router.post(
   api_controller.api_blog_create_post
 )
 
-// Update blog post after verifying JWT Token
+// Update blog post after verifying JWT Token (For Admin site)
 router.put(
   '/blogs/:id',
   middleware.verifyToken,
   api_controller.api_blog_update_put
 )
+
+// Update like/dislike from frontend
+router.put('/blogs/reaction/update/:id', api_controller.api_reaction_update_put)
 
 // Delete blog after verifying JWT Token
 router.post(
