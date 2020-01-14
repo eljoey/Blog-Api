@@ -37,7 +37,7 @@ app.use(bodyParser.json())
 app.use(middleware.requestLogger)
 app.use(middleware.getToken)
 
-app.use('/', () => {
+app.use('/', (req, res) => {
   res.send('access denied')
 })
 app.use('/login', loginRouter)
