@@ -5,6 +5,7 @@ const middleware = require('./utils/middleware')
 
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const helmet = require('helmet')
 
 const loginRouter = require('./routes/login')
 const apiRouter = require('./routes/api')
@@ -29,6 +30,7 @@ mongoose
     logger.error('error connecting to MongoDB')
   })
 
+app.use(helmet())
 app.use(cors())
 app.use(bodyParser.json())
 
