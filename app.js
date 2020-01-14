@@ -44,4 +44,4 @@ app.use('/login', loginRouter)
 app.use('/api', apiRouter)
 
 const PORT = config.PORT
-app.listen(PORT || 3000, () => console.log(`app listening on port ${PORT}`))
+app.listen(PORT || '3000', () => console.log(`app listening on port ${PORT}`))
