@@ -21,7 +21,7 @@ exports.login = async (req, res, next) => {
     id: user._id
   }
 
-  const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: '7d' })
+  const token = jwt.sign(userForToken, process.env.SECRET)
 
   res.status(200).send({ token })
 }
