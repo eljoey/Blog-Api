@@ -47,8 +47,10 @@ exports.api_blog_update_put = async (req, res, next) => {
     content: body.content
   }
 
+  console.log(updatedBlog)
   await Blog.findByIdAndUpdate(blogId, updatedBlog, { new: true })
   res.json(updatedBlog)
+  // res.json('updated')
 }
 
 exports.api_reaction_update_put = async (req, res, next) => {
