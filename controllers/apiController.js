@@ -36,12 +36,12 @@ exports.api_blog_update_put = async (req, res, next) => {
   const body = req.body
   const blogId = req.params.id
 
+  const currentBlog = await Blog.findById(blogId)
+
   const updatedBlog = {
+    ...currentBlog.toObject(),
     title: body.title,
-    content: body.content,
-    likes: body.likes,
-    dislikes: body.dislikes,
-    comments: body.comments
+    content: body.content
   }
 
   await Blog.findByIdAndUpdate(blogId, updatedBlog, { new: true })
