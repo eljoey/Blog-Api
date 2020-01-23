@@ -8,7 +8,8 @@ const blogSchema = new Schema({
   content: { type: String, require: true },
   likes: { type: Number, default: 0 },
   dislikes: { type: Number, default: 0 },
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  timestamp: { type: Date, required: true, default: Date.now() }
 })
 
 const Blog = mongoose.model('Blog', blogSchema)

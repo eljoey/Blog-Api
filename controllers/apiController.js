@@ -27,7 +27,8 @@ exports.api_blog_create_post = async (req, res, next) => {
     user: req.decodedToken.id,
     likes: 0,
     dislikes: 0,
-    comments: []
+    comments: [],
+    timestamp: body.timestamp
   })
 
   const savedBlog = await blog.save()
